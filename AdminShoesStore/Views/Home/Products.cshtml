@@ -20,17 +20,27 @@
             .DataSource(ds => ds.WebApi().Controller("Products").LoadAction("BranchesLookup").Key("Value"))
             .ValueExpr("Value")
             .DisplayExpr("Text")
-        );
+        ).Caption("Branch");
 
         columns.AddFor(m => m.CategoryId).Lookup(lookup => lookup
             .DataSource(ds => ds.WebApi().Controller("Products").LoadAction("CategoriesLookup").Key("Value"))
             .ValueExpr("Value")
             .DisplayExpr("Text")
-        );
+        ).Caption("Category");
     })
     .Editing(e => e
         .AllowAdding(true)
         .AllowUpdating(true)
         .AllowDeleting(true)
     )
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager =>
+    {
+        pager.AllowedPageSizes(new[] { 5, 10, 15, 20});
+        pager.ShowPageSizeSelector(true);
+        pager.ShowInfo(true);
+    })
+    .Sorting(s => s.Mode(GridSortingMode.Multiple))
+    .Grouping(g => g.AutoExpandAll(false))
+    .GroupPanel(gp => gp.Visible(true))
 )
